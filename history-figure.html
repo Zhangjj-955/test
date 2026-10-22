@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>你骨子里是哪个历史人物</title>
+<script>
+/* ============================================================================
+   ★★★ 发货前只改这里，改完保存就能用。整个文件其它地方都不用动。 ★★★
+   ============================================================================
+   SHOP : 结果长图最底下那行字。买家每次把长图发到小红书，都会带着它，
+          这是你唯一的免费曝光位 —— 换成你的店铺名或引流话术。
+   MODE : 'free' 全部解锁。把这个 HTML 文件本身当商品、网盘发货用这个（默认）
+          'code' 要输兑换码才能看完整报告。H5 挂服务器、买家付款拿码用这个
+          'demo' 只给简版结果 + 付费引导。发在笔记里当免费试玩版用这个
+   SALT : 兑换码盐值。只有 MODE 填 'code' 时才用得到，
+          必须和 tools/gen-codes.html 里的 SALT 改成同一个字符串，否则码验不过
+============================================================================ */
+const SETUP = {
+  SHOP: '照见小馆 · 小红书搜「你骨子里是哪个历史人物」',
+  MODE: 'free',
+  SALT: 'lishi-2026-ktc'
+};
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+/* 中文长串不换行会撑破布局：统一允许断行，并让 flex 子项可以收缩 */
+body,button{overflow-wrap:break-word;word-break:break-word}
+.qbody,.qtext,.opts,.opt,.quote,.para,.li,.wall,.rare,.cp,.cover,.res,.sec,.dims,.dim-row,.lockbox{min-width:0}
+:root{
+  --ink:#2b2520;        /* 墨 */
+  --ink-2:#6b5f55;      /* 淡墨 */
+  --paper:#f4efe6;      /* 宣纸 */
+  --paper-2:#fbf8f2;
+  --gold:#a8743a;       /* 赭石 */
+  --gold-l:#c9a06a;
+  --red:#9c3a2e;        /* 朱砂 */
+  --line:rgba(43,37,32,.12);
+}
+html,body{height:100%}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.serif{font-family:"Songti SC","STSong","SimSun","Noto Serif SC",serif}
+#app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;
+  background:
+    radial-gradient(900px 420px at 50% -8%,rgba(201,160,106,.20),transparent 62%),
+    var(--paper);
+}
+.wrap{padding:0 26px}
+
+/* ---------- 封面 ---------- */
+/* 字距会在行尾留出空隙，居中文本会整体右偏，用 margin-left 抵消 */
+.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 30px}
+.seal{width:62px;height:62px;border:2px solid var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:var(--red);font-size:26px;letter-spacing:.5em;margin-bottom:30px;opacity:.9;text-indent:.5em}
+.cover h1{font-size:38px;line-height:1.3;letter-spacing:3px;font-weight:600;margin-left:3px}
+.cover h1 em{font-style:normal;color:var(--red)}
+.cover .sub{margin-top:18px;color:var(--ink-2);font-size:14px;line-height:2;letter-spacing:1px;margin-left:1px}
+.rule{width:40px;height:1px;background:var(--gold);margin:28px auto;opacity:.55}
+.meta{display:flex;gap:26px;color:var(--ink-2);font-size:12px;letter-spacing:1px;margin-bottom:46px;margin-left:1px}
+.meta b{display:block;font-size:19px;color:var(--ink);font-weight:600;margin-bottom:4px;letter-spacing:0}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--ink);color:var(--paper-2);border:none;border-radius:999px;
+  padding:16px 52px;font-size:16px;letter-spacing:4px;cursor:pointer;
+  font-family:inherit;transition:transform .12s ease,opacity .12s;
+}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);letter-spacing:2px}
+.btn.gold{background:linear-gradient(135deg,#b4813f,#8e5f2c);color:#fff8ec;box-shadow:0 8px 22px -10px rgba(140,92,40,.8)}
+.btn.block{display:flex;width:100%;padding:17px 0}
+.tip{font-size:11px;color:var(--ink-2);margin-top:18px;opacity:.75;line-height:1.8}
+
+/* ---------- 答题 ---------- */
+.quiz{min-height:100vh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+.bar{position:sticky;top:0;z-index:5;background:rgba(244,239,230,.94);backdrop-filter:blur(10px);padding:18px 26px 14px}
+.bar-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--ink-2);letter-spacing:1px;margin-bottom:10px}
+.bar-top b{font-size:17px;color:var(--ink)}
+.track{height:3px;background:rgba(43,37,32,.09);border-radius:2px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--gold-l),var(--gold));border-radius:2px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+.qbody{flex:1;display:flex;flex-direction:column;justify-content:center;padding:34px 26px 40px}
+.qnum{font-size:46px;color:var(--gold);opacity:.26;line-height:1;margin-bottom:12px}
+.qtext{font-size:23px;line-height:1.75;letter-spacing:.5px;margin-bottom:38px;font-weight:500}
+.opts{display:flex;flex-direction:column;gap:14px}
+.opt{
+  background:var(--paper-2);border:1px solid var(--line);border-radius:16px;
+  padding:19px 22px;font-size:16px;line-height:1.65;text-align:left;cursor:pointer;
+  font-family:inherit;color:var(--ink);transition:all .16s ease;position:relative;
+}
+.opt:active{transform:scale(.985)}
+.opt.sel{border-color:var(--gold);background:#fff;box-shadow:0 6px 18px -12px rgba(168,116,58,.9)}
+.opt .mk{color:var(--gold);font-size:13px;margin-right:10px;letter-spacing:1px}
+.back{position:absolute;left:22px;bottom:30px;font-size:13px;color:var(--ink-2);background:none;border:none;cursor:pointer;font-family:inherit;padding:8px}
+.back[hidden]{display:none}
+
+/* ---------- 结果 ---------- */
+.res{padding:46px 0 70px;animation:up .5s ease both}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.res-kicker{text-align:center;font-size:12px;color:var(--ink-2);letter-spacing:5px;margin-bottom:16px}
+.res-name{text-align:center;font-size:clamp(44px,14vw,62px);letter-spacing:6px;line-height:1.2;font-weight:600;text-indent:6px}
+.res-title{text-align:center;margin-top:14px;font-size:17px;color:var(--gold);letter-spacing:7px;text-indent:7px}
+.res-code{text-align:center;margin-top:16px;font-size:11px;color:var(--ink-2);letter-spacing:3px;opacity:.8}
+.quote{margin:34px 26px 0;padding:22px 24px;background:var(--paper-2);border-left:2px solid var(--gold);border-radius:4px 14px 14px 4px;
+  font-size:17px;line-height:1.9;letter-spacing:.5px}
+
+.sec{margin-top:40px}
+.sec-h{display:flex;align-items:center;gap:12px;margin:0 26px 16px}
+.sec-h span{font-size:13px;letter-spacing:4px;color:var(--ink-2)}
+.sec-h i{flex:1;height:1px;background:var(--line)}
+.para{margin:0 26px;font-size:15.5px;line-height:2.05;color:#443b33;letter-spacing:.3px}
+
+/* 四维 */
+.dims{margin:0 26px;display:flex;flex-direction:column;gap:20px}
+.dim-row{}
+.dim-lab{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-2);margin-bottom:8px;letter-spacing:1px}
+.dim-lab .on{color:var(--ink);font-weight:600}
+.dim-track{height:8px;background:rgba(43,37,32,.07);border-radius:5px;position:relative;overflow:hidden}
+.dim-mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(43,37,32,.14)}
+.dim-fill{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,var(--gold-l),var(--gold));border-radius:5px;transition:all .7s cubic-bezier(.4,0,.2,1)}
+.dim-pct{font-size:11px;color:var(--gold);margin-top:6px;letter-spacing:1px}
+
+/* 列表 */
+.list{margin:0 26px;display:flex;flex-direction:column;gap:13px}
+.li{display:flex;gap:12px;font-size:15px;line-height:1.8;color:#443b33}
+.li .d{color:var(--gold);flex-shrink:0}
+.li.dark .d{color:var(--ink-2)}
+
+/* CP 卡 */
+.cps{margin:0 26px;display:flex;gap:12px}
+.cp{flex:1;min-width:0;background:var(--paper-2);border:1px solid var(--line);border-radius:16px;padding:18px 10px;text-align:center}
+.cp .t{font-size:11px;letter-spacing:2px;color:var(--ink-2);margin-bottom:10px}
+.cp .n{font-size:20px;letter-spacing:1px;margin-bottom:6px;line-height:1.35}
+.cp .s{font-size:11px;color:var(--gold);letter-spacing:0;line-height:1.6}
+.cp.bad .s{color:var(--ink-2)}
+
+/* 罕见度 */
+.rare{margin:0 26px;background:linear-gradient(135deg,#2b2520,#413731);color:var(--paper);border-radius:20px;padding:26px 24px;text-align:center}
+.rare .big{font-size:48px;color:var(--gold-l);letter-spacing:1px;line-height:1.1}
+.rare .t{font-size:12px;letter-spacing:3px;opacity:.65;margin-bottom:12px}
+.rare .d{font-size:12.5px;opacity:.68;line-height:1.9;margin-top:12px}
+
+/* 付费墙 */
+.wall{margin:38px 26px 0;background:var(--paper-2);border:1px solid var(--line);border-radius:22px;padding:30px 24px;text-align:center;position:relative;overflow:hidden}
+.wall::before{content:"";position:absolute;left:0;right:0;top:-72px;height:72px;background:linear-gradient(to top,var(--paper-2),transparent)}
+.wall h3{font-size:21px;letter-spacing:2px;margin-bottom:8px}
+.wall p{font-size:13px;color:var(--ink-2);line-height:2;margin-bottom:20px}
+.locked{margin:0 26px;position:relative}
+.locked .blur{filter:blur(7px);opacity:.42;pointer-events:none;user-select:none}
+.codebox{display:flex;gap:10px;margin-top:16px}
+.codebox input{flex:1;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:16px;
+  letter-spacing:2px;font-family:inherit;color:var(--ink);text-align:center;text-transform:uppercase}
+.codebox input:focus{outline:none;border-color:var(--gold)}
+.err{color:var(--red);font-size:12.5px;margin-top:10px;min-height:18px;letter-spacing:.5px}
+
+.foot{margin:48px 26px 0;text-align:center}
+.foot .note{font-size:11px;color:var(--ink-2);line-height:2;opacity:.7;margin-top:22px}
+
+canvas{display:none}
+.mask{position:fixed;inset:0;background:rgba(20,16,12,.88);z-index:50;display:none;align-items:center;justify-content:center;flex-direction:column;padding:24px}
+.mask.on{display:flex}
+.mask img{max-width:100%;max-height:76vh;border-radius:12px;box-shadow:0 20px 50px -20px #000}
+.mask p{color:#e8ddcd;font-size:13px;margin-top:18px;letter-spacing:1px;text-align:center;line-height:1.9}
+.mask .x{position:absolute;top:calc(18px + env(safe-area-inset-top));right:22px;color:#e8ddcd;font-size:30px;background:none;border:none;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<canvas id="cv" width="1080" height="1560"></canvas>
+<div class="mask" id="mask">
+  <button class="x" onclick="document.getElementById('mask').classList.remove('on')">×</button>
+  <img id="shot" alt="结果长图">
+  <p>长按图片保存到相册 · 可直接发小红书</p>
+</div>
+
+<script>
+/* 配置在文件顶部的 SETUP 块（第 7 行附近），这里不用改 */
+const CONFIG = Object.assign({ BRAND:'照见小馆' }, SETUP);
+
+/* ---------------- 维度定义 ----------------
+   J 进取 / S 守拙      W 外放 / N 内敛
+   P 破局 / X 守序      R 热忱 / L 冷峻
+------------------------------------------- */
+const DIMS = [
+  {k:'1', a:'J', b:'S', an:'进取', bn:'守拙', desc:'你出手的方式'},
+  {k:'2', a:'W', b:'N', an:'外放', bn:'内敛', desc:'你能量的朝向'},
+  {k:'3', a:'P', b:'X', an:'破局', bn:'守序', desc:'你和规矩的关系'},
+  {k:'4', a:'R', b:'L', an:'热忱', bn:'冷峻', desc:'你做决定的温度'}
+];
+
+/* ---------------- 20 道题（每维度 5 题，已打散） ---------------- */
+const Q = [
+  {d:0,t:'群里正在吵一件跟你有关的事。',a:'直接下场，把话说清楚',b:'先不出声，看看风向再说'},
+  {d:1,t:'忙完一整天，你最想要的是——',a:'找个人把今天从头讲一遍',b:'一个人待着，谁也别找我'},
+  {d:2,t:'一个流程明显不合理，但所有人都在照走。',a:'能绕就绕，先把事办成',b:'先按规矩走完，再提意见'},
+  {d:3,t:'朋友开口求你办一件有点为难的事。',a:'咬咬牙，还是想办法帮',b:'会直接说，这个我做不到'},
+  {d:0,t:'公司空出一个位置，你能力够，资历差一截。',a:'先报名，不行再说',b:'等下一次更稳的机会'},
+  {d:1,t:'你的情绪——',a:'基本写在脸上，藏不住',b:'别人很难看出我在想什么'},
+  {d:2,t:'你更受不了哪一种？',a:'芝麻大的事也要层层审批',b:'没有章法，谁都能乱来'},
+  {d:3,t:'做一个重要决定时，你先问的是——',a:'我自己舒不舒服',b:'这件事划不划算'},
+  {d:0,t:'你做的方案，被人原样拿去用了。',a:'当场点名，要个说法',b:'记在心里，下次不给他看'},
+  {d:1,t:'换了新环境，第一周结束时你——',a:'已经和一圈人混熟了',b:'还在观察，熟了再往前走'},
+  {d:2,t:'在你眼里，「规矩」是——',a:'用来被更新的东西',b:'用来被守住的东西'},
+  {d:3,t:'有人曾经对你不好，后来又来找你。',a:'嘴上记仇，心还是会软',b:'一次就够了，不会有第二次'},
+  {d:0,t:'一件事你只有五成把握。',a:'五成就可以动手了',b:'至少八成，我才敢开始'},
+  {d:1,t:'你分享欲最强的时候是——',a:'事情刚发生，马上就想说',b:'过去很久之后，才写得出来'},
+  {d:2,t:'要开始一件全新的事，你会先——',a:'先干起来，边做边改',b:'先把计划想明白再动'},
+  {d:3,t:'团队里有人明显在拖后腿。',a:'先问问他是不是遇到什么事了',b:'先把他手里的活挪走'},
+  {d:0,t:'聚会冷场了，空气有点尴尬。',a:'我起个头，把场子带起来',b:'等别人先开口，我再接话'},
+  {d:1,t:'要在陌生场合发言。',a:'不太打草稿，上去就能说',b:'会在心里排练好几遍'},
+  {d:2,t:'你更欣赏哪一种人？',a:'敢把牌桌掀了的那种',b:'能把烂摊子收拾好的那种'},
+  {d:3,t:'你更相信哪句话？',a:'人心换人心',b:'只有利益最靠得住'}
+];
+
+/* ---------------- 16 位历史人物 ---------------- */
+const F = {
+JWPR:{n:'项羽',t:'烈火霸王',one:'你的强，是那种不给自己留后路的强。',
+ bio:'你做事不喜欢迂回，看准了就整个人压上去。你的魅力恰恰来自不加掩饰——高兴、愤怒、在乎谁，所有人都看得见。但也正因为什么都写在脸上，你一旦被辜负，塌得比谁都彻底。你很少输给对手，你多半是输给心里那口咽不下的气。',
+ up:['关键时刻敢把自己押上去，别人只敢下注，你敢下场','你认定的人，你会一路护到底，哪怕代价很大'],
+ dn:['赢的时候不肯见好就收，输的时候不肯低头认账','对「背叛」的容错率是零，而人间很难做到零'],
+ year:'若你生在那个年代，你会是那个明明可以渡江、却掉头回去的人。'},
+JWPL:{n:'武则天',t:'日月当空',one:'你不等规则允许你，你让规则来适应你。',
+ bio:'你很早就看明白一件事：位置不会自己掉下来，得去拿。你擅长在别人还在讲情面的时候算清楚局势，该用的人用，该断的关系断。你并不冷血，你只是把情绪和决策彻底分开放。代价是你很难真正放松——因为你知道，松一次就可能回不去。',
+ up:['目标清晰到可怕，别人还在犹豫，你已经在布局','能在没有先例的地方，给自己造出一条先例'],
+ dn:['习惯把人当棋子之后，就很难再把人当人','你赢得越多，能说真话的人就越少'],
+ year:'若你生在那个年代，你会是那个敢给自己立无字碑的人。'},
+JWXR:{n:'李世民',t:'天可汗',one:'你能把一群不服你的人，变成愿意为你做事的人。',
+ bio:'你有野心，但你的野心是「把事做成」，不是「把人压住」。你能听进去反对意见，甚至会主动去找说真话的人——这在有野心的人里非常罕见。你的难处不在外面，在你自己心里：那些为了上位必须做的事，你会记很久。',
+ up:['格局够大，容得下比你强的人在身边','错了会改，而且改得很快，不护短也不护自己'],
+ dn:['对自己的要求高到会反复消耗自己','有些旧账你嘴上翻篇了，心里一直没翻'],
+ year:'若你生在那个年代，你会是那个把最能骂你的人留在身边的人。'},
+JWXL:{n:'秦始皇',t:'六合归一',one:'你想要的不是赢一次，是一劳永逸。',
+ bio:'你受不了混乱。别人看到的是一堆事，你看到的是一套应该被统一的系统。你的执行力强到让周围人吃力，因为你推进的从来不是一件事，而是一整套标准。你的问题不在于方向错，而在于你给世界的时间表，比世界愿意给的快太多。',
+ up:['能把零散的东西整合成一套能复用的体系','一旦定下标准，就会执行到底，不打折'],
+ dn:['推进太快，容易把本来支持你的人一起累垮','只看结果的时候，会听不见过程里的声音'],
+ year:'若你生在那个年代，你会是那个统一了度量衡、却没能统一人心的人。'},
+JNPR:{n:'范蠡',t:'功成身退',one:'你最厉害的本事，是知道什么时候该走。',
+ bio:'你有能力把一件难事做成，但你对「位置」本身没有执念。你很早就看清一个道理：赢的那一刻往往是最危险的时刻。所以你会在所有人都以为你要留下来享受成果的时候，悄悄把自己抽出去。别人以为你淡泊，其实你只是算得比谁都远。',
+ up:['对局势的嗅觉极准，风向变之前你就动了','不被身份绑架，随时能重新开始一次'],
+ dn:['抽身太快，会让真心待你的人觉得被辜负','因为总留退路，有些事你没有全力以赴过'],
+ year:'若你生在那个年代，你会是那个功成那天就把官印放下、泛舟而去的人。'},
+JNPL:{n:'司马懿',t:'冢虎伏枥',one:'你不争一时，你只等那一次。',
+ bio:'你能忍。不是没脾气，是你算过——现在发作成本太高。你习惯把真实想法压到最底下，表面配合，暗里积累。你的耐心不是性格，是策略。但这套太好用，用久了会有副作用：连最亲近的人，也开始猜不透你在想什么，包括你自己。',
+ up:['耐心是你的武器，熬得过别人熬不过的阶段','在被低估的位置上，你反而积累得最快'],
+ dn:['藏太久，会忘了自己原本想要什么','赢下来之后，你很难再相信任何人'],
+ year:'若你生在那个年代，你会是那个装了很多年病、然后一夜之间起身的人。'},
+JNXR:{n:'诸葛亮',t:'鞠躬尽瘁',one:'你把别人的事，扛成了自己的命。',
+ bio:'你是那种会把所有事都接过来的人。不是因为别人逼你，是因为你一旦看到有地方没人管，就会不安。你对自己的标准高得不讲道理，常常明知道做不成，还是要做完——因为「答应过」这三个字，对你来说重过结果。你最缺的从来不是能力，是有人让你歇一会儿。',
+ up:['值得托付，你答应的事会真的做到最后一刻','事无巨细都能照顾到，别人在你手下很安心'],
+ dn:['什么都自己扛，身边人于是永远长不大','明知不可为而为之，既是你的光，也是你的耗'],
+ year:'若你生在那个年代，你会是那个灯下还在算粮草、第二天照常出征的人。'},
+JNXL:{n:'张居正',t:'铁腕新政',one:'你愿意做那个被骂的人，只要事能成。',
+ bio:'你清楚地知道，改一件旧东西要得罪多少人，你还是改了。你不靠喊口号，你靠把考核做细、把账算清、把人换掉。你并不追求被喜欢——你追求的是在你手上，这套东西真的转起来了。你最大的风险从来不是失败，而是你人一走，它就又塌回去。',
+ up:['能把宏大的目标拆成可执行、可考核的动作','顶得住非议，不会因为别人不高兴就停手'],
+ dn:['一切系于你一人，你不在就难以为继','对人太严，会让有些本可留住的人提前离场'],
+ year:'若你生在那个年代，你会是那个把国库填满、却在身后被清算的人。'},
+SWPR:{n:'李白',t:'谪仙入世',one:'你一生都在和「必须正经一点」较劲。',
+ bio:'你有才华，也有脾气，而且这两样你都不打算收着。你受不了把自己折成某个标准形状去换位置。你热情、慷慨、来得快去得也快，身边总围着人，但真正留下来的少。你其实比看上去在意很多事，只是你宁可装作无所谓，也不想低头去要。',
+ up:['有极强的感染力，你在场的时候氛围完全不同','不被世俗定义绑住，活得比大多数人自由'],
+ dn:['不肯弯一下，于是很多机会从你身边绕过去','高兴和失落都来得太快，难以持续用力'],
+ year:'若你生在那个年代，你会是那个被请进宫、又自己把门摔上走掉的人。'},
+SWPL:{n:'吕不韦',t:'奇货可居',one:'别人看到一个人，你看到的是一笔长线。',
+ bio:'你天生会估值。你看人、看机会、看关系，都会下意识算一个回报周期。你不急着要眼前的小利，你愿意投很久去等一个大的。你交际能力很强，但你心里清楚哪些是朋友、哪些是资源。你的风险在于：你最成功的那笔投资，最后往往不再需要你。',
+ up:['识人极准，能在别人落魄时看出他的价值','敢做长线，投入期的孤独你扛得住'],
+ dn:['习惯性衡量得失，会让关系少掉一点真','捧起来的人，未必会按你的剧本走'],
+ year:'若你生在那个年代，你会是那个问「此人可居否」、然后押上全部家产的人。'},
+SWXR:{n:'苏轼',t:'一蓑烟雨',one:'日子把你按下去几次，你都能自己弹回来。',
+ bio:'你不是没受过委屈，你是不打算让委屈定义自己。被贬到哪儿，你就把哪儿过成值得一过的样子——研究吃的、交新朋友、写点东西。你对人几乎没有防备，所以吃过亏，但你没因此变得刻薄，这一点比什么都难得。你的处世智慧，是真的疼过之后长出来的。',
+ up:['复原力极强，跌下去之后总能重新长出来','走到哪儿都能交到朋友，不挑环境'],
+ dn:['嘴上没把门，无心一句话会给自己惹麻烦','太快原谅，于是同一个坑会踩第二次'],
+ year:'若你生在那个年代，你会是那个被贬到岭南、转头研究起荔枝的人。'},
+SWXL:{n:'上官婉儿',t:'称量天下',one:'你站在不是主位的位置上，做着最关键的判断。',
+ bio:'你擅长在规则内部找到自己的空间。你不掀桌子，你把桌上的秩序摸透，然后成为那个不可替代的人。你的审美和判断力都很好，分寸感更好——该说什么、说到几分、对谁说，你心里有一把尺。你的难处是：你的位置从来不属于你，它属于你服务的那个局面。',
+ up:['分寸感一流，复杂关系里你从不说错话','专业度够硬，让人绕不开你'],
+ dn:['始终在别人的棋盘上落子，不容易真正安全','把自己收得太好，久了会不知道哪个是真的自己'],
+ year:'若你生在那个年代，你会是那个在帘后定夺天下文章的人。'},
+SNPR:{n:'庄子',t:'逍遥不系',one:'你不是输不起，你是根本没打算上那张桌子。',
+ bio:'你对大多数人争的东西都没什么兴趣。不是清高，是你真的算过——那些要付出的，换不来你想要的那种自在。你心思其实很细，看人看事都透，只是看透了也懒得说破。你最看重的是不被安排，所以你会主动放弃很多本可以到手的东西。',
+ up:['精神上极度独立，别人的评价动摇不了你','看问题跳得出去，常能给出别人想不到的角度'],
+ dn:['太早抽离，有些该争的也一起放掉了','看得太透，会少掉一点往前冲的劲'],
+ year:'若你生在那个年代，你会是那个把相位推掉、宁可在泥里打滚的人。'},
+SNPL:{n:'刘伯温',t:'半局先知',one:'你总比在场的人多看半步，也总比他们多累半分。',
+ bio:'你习惯提前推演。一件事还没开始，你脑子里已经跑完了三种结局。这让你很少踩坑，也让你很难真正投入——因为你总是同时在做事和看着自己做事。你给出的判断往往被证明是对的，但你很少把话说满，因为你更清楚说满之后要承担什么。',
+ up:['预判极准，复杂局面里你是最先看清的那个','不被情绪带走，关键时刻的判断最稳'],
+ dn:['什么都算到了，就很难有全情投入的时候','话留三分，会让人觉得你始终没有交底'],
+ year:'若你生在那个年代，你会是那个算准了一切、唯独没算自己退路的人。'},
+SNXR:{n:'李清照',t:'人比黄花',one:'你把所有人都看得见的脆弱，写成了别人学不来的力量。',
+ bio:'你心很细，细到别人随口一句能在你这儿留很久。你不争不抢，但你有自己坚硬的底线——赌书泼茶的日子你享受得起，山河破碎的时候你也写得出「思项羽」。你的温柔不是软弱，是你见过太多，仍然选择不变硬。',
+ up:['感受力极强，别人错过的细节你全都接收到了','在剧变里仍然守得住自己的判断和品位'],
+ dn:['内耗严重，一件小事会在心里反复过很多遍','把情绪都留给自己，身边人未必知道你在扛'],
+ year:'若你生在那个年代，你会是那个国破之后，把金石录一箱一箱背着走的人。'},
+SNXL:{n:'司马光',t:'资治千秋',one:'你不求快，你求的是这件事一百年后还站得住。',
+ bio:'你做事求稳、求实、求有根据。你不喜欢凭感觉拍板，更不喜欢为了好看去冒险。别人嫌你慢，但你交出来的东西经得起翻。你对变化天然警惕——不是守旧，是你见过太多「改一半然后一地鸡毛」。你的价值要很久之后才会被完全看见。',
+ up:['极度可靠，你出手的东西基本不会出错','耐得住长期投入，十九年也坐得下去'],
+ dn:['对新东西反应慢，机会窗口可能就错过了','太讲原则，会在该灵活的时候把路走窄'],
+ year:'若你生在那个年代，你会是那个用十九年写一部书、不问当下有没有用的人。'}
+};
+
+/* ---------------- 状态 ---------------- */
+let ans = [], idx = 0, result = null, unlocked = false;
+const app = document.getElementById('app');
+const LS = 'hf_state_v1';
+
+const AB='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // 32 字符，去掉易混的 0 O 1 I
+function hash(s){let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}return h>>>0}
+function sum(body){const h=hash(body+CONFIG.SALT);return AB[h&31]+AB[(h>>>5)&31]}
+function codeOK(raw){
+  const c=(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(c.length!==10||c.slice(0,2)!=='LS')return false;
+  return c.slice(8)===sum(c.slice(0,8));
+}
+
+/* 计分 */
+function score(){
+  const raw=[0,0,0,0];                       // 每维选 a 的次数 0..5
+  ans.forEach((v,i)=>{ if(v==='a') raw[Q[i].d]++ });
+  const code = DIMS.map((d,i)=> raw[i]>=3 ? d.a : d.b).join('');
+  // 二项分布理论概率：C(5,k)/32，四维相乘
+  const C=[1,5,10,10,5,1];
+  let p=1; raw.forEach(k=> p *= C[k]/32);
+  return {code, raw, p};
+}
+function pctText(p){
+  const v=p*100;
+  if(v>=1) return v.toFixed(1)+'%';
+  if(v>=0.1) return v.toFixed(2)+'%';
+  if(v>=0.001) return v.toFixed(3)+'%';
+  // 极小概率直接给出「多少分之一」，避免显示成 0.000%
+  return '1 / '+Math.round(1/p).toLocaleString();
+}
+// 最配 = 翻转 2、4 维（内外互补、冷热互补，底色一致）
+function partner(c){const m={W:'N',N:'W',R:'L',L:'R'};return c[0]+m[c[1]]+c[2]+m[c[3]]}
+function clash(c){const m={J:'S',S:'J',W:'N',N:'W',P:'X',X:'P',R:'L',L:'R'};return [...c].map(x=>m[x]).join('')}
+
+/* ---------------- 渲染 ---------------- */
+function viewCover(){
+  app.innerHTML=`
+  <div class="cover">
+    <div class="seal serif">照见</div>
+    <h1 class="serif">你骨子里<br>是哪个<em>历史人物</em></h1>
+    <div class="sub">不是看你像谁<br>是看你遇到事的时候，会变成谁</div>
+    <div class="rule"></div>
+    <div class="meta">
+      <div><b>20</b>道题</div>
+      <div><b>4</b>个维度</div>
+      <div><b>16</b>种结局</div>
+    </div>
+    <button class="btn serif" id="go">开 始</button>
+    <div class="tip">凭直觉选，不要想「应该怎么答」<br>约 2 分钟 · 答案不上传，只存在你手机里</div>
+  </div>`;
+  document.getElementById('go').onclick=()=>{ans=[];idx=0;viewQuiz()};
+}
+
+function viewQuiz(){
+  const q=Q[idx], n=idx+1, pct=(idx/Q.length*100);
+  app.innerHTML=`
+  <div class="quiz">
+    <div class="bar">
+      <div class="bar-top"><span><b>${String(n).padStart(2,'0')}</b> / ${Q.length}</span><span>${DIMS[q.d].desc}</span></div>
+      <div class="track"><div class="fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="qbody">
+      <div class="qnum serif">${String(n).padStart(2,'0')}</div>
+      <div class="qtext">${q.t}</div>
+      <div class="opts">
+        <button class="opt" data-v="a"><span class="mk serif">A</span>${q.a}</button>
+        <button class="opt" data-v="b"><span class="mk serif">B</span>${q.b}</button>
+      </div>
+    </div>
+    <button class="back" id="bk" ${idx===0?'hidden':''}>← 上一题</button>
+  </div>`;
+  app.querySelectorAll('.opt').forEach(el=>{
+    el.onclick=()=>{
+      el.classList.add('sel');
+      ans[idx]=el.dataset.v;
+      setTimeout(()=>{ idx++; idx>=Q.length ? viewResult() : viewQuiz(); },180);
+    };
+  });
+  const bk=document.getElementById('bk'); if(bk) bk.onclick=()=>{idx--;viewQuiz()};
+}
+
+function dimRow(d,k){
+  const left = k;            // 选 a 的次数
+  const pct  = Math.round(k/5*100);
+  const aOn  = k>=3;
+  const w    = Math.abs(pct-50);
+  const style = aOn ? `right:50%;width:${w}%` : `left:50%;width:${w}%`;
+  return `<div class="dim-row">
+    <div class="dim-lab"><span class="${aOn?'on':''}">${d.an}</span><span class="${aOn?'':'on'}">${d.bn}</span></div>
+    <div class="dim-track"><div class="dim-mid"></div><div class="dim-fill" style="${style}"></div></div>
+    <div class="dim-pct">${aOn?d.an:d.bn} ${Math.max(pct,100-pct)}%</div>
+  </div>`;
+}
+
+function viewResult(){
+  result = score();
+  const f = F[result.code], cp = F[partner(result.code)], bad = F[clash(result.code)];
+  const showFull = unlocked || CONFIG.MODE==='free';
+  const isDemo   = CONFIG.MODE==='demo' && !showFull;
+
+  const head = `
+  <div class="res">
+    <div class="res-kicker">你 的 结 果</div>
+    <div class="res-name serif">${f.n}</div>
+    <div class="res-title serif">${f.t}</div>
+    <div class="res-code">${result.code} · ${DIMS.map((d,i)=>result.raw[i]>=3?d.an:d.bn).join(' · ')}</div>
+    <div class="quote serif">${f.one}</div>`;
+
+  const full = `
+    <div class="sec">
+      <div class="sec-h"><span>人 物 小 传</span><i></i></div>
+      <div class="para">${f.bio}</div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span>四 维 坐 标</span><i></i></div>
+      <div class="dims">${DIMS.map((d,i)=>dimRow(d,result.raw[i])).join('')}</div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span>你 的 高 光</span><i></i></div>
+      <div class="list">${f.up.map(x=>`<div class="li"><span class="d">◆</span><span>${x}</span></div>`).join('')}</div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span>你 的 暗 面</span><i></i></div>
+      <div class="list">${f.dn.map(x=>`<div class="li dark"><span class="d">◇</span><span>${x}</span></div>`).join('')}</div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span>谁 和 你 成 局</span><i></i></div>
+      <div class="cps">
+        <div class="cp"><div class="t">最 配</div><div class="n serif">${cp.n}</div><div class="s">在你最用力处补位</div></div>
+        <div class="cp bad"><div class="t">最 不 配</div><div class="n serif">${bad.n}</div><div class="s">四维全反，互相消耗</div></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span>罕 见 度</span><i></i></div>
+      <div class="rare">
+        <div class="t">这 套 答 案 的 出 现 概 率</div>
+        <div class="big serif">${pctText(result.p)}</div>
+        <div class="d">按每题随机作答计算，你这 20 题的得分组合<br>理论上每 ${Math.round(1/result.p).toLocaleString()} 个人里才出现 1 次</div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span>如 果 换 个 年 代</span><i></i></div>
+      <div class="para serif" style="font-size:17px">${f.year}</div>
+    </div>
+    <div class="foot">
+      <button class="btn gold block serif" id="save">生成长图 · 保存分享</button>
+      <button class="btn ghost block serif" id="again" style="margin-top:12px">重 新 测 一 次</button>
+      <div class="note">本测试用于自我觉察与娱乐，不具备任何心理学诊断效力。<br>罕见度为理论概率，非真实用户统计。</div>
+    </div>
+  </div>`;
+
+  const wall = `
+    <div class="sec">
+      <div class="sec-h"><span>人 物 小 传</span><i></i></div>
+      <div class="locked"><div class="blur"><div class="para">${f.bio}</div></div></div>
+    </div>
+    <div class="wall">
+      <h3 class="serif">完整报告还有 6 个部分</h3>
+      <p>人物小传 · 四维坐标 · 你的高光 · 你的暗面<br>最配与最不配的人 · 答案罕见度 · 可保存长图</p>
+      ${ CONFIG.MODE==='code' ? `
+        <div class="codebox">
+          <input id="ci" placeholder="输入兑换码" maxlength="14" autocomplete="off">
+          <button class="btn gold serif" style="padding:14px 24px;letter-spacing:2px" id="cb">解锁</button>
+        </div>
+        <div class="err" id="ce"></div>
+        <div class="tip">兑换码在你的订单详情里 · 一码永久可用</div>`
+      : `<div class="tip" style="font-size:13px;line-height:2">在小红书店铺拍下完整版<br>付款后自动发货，立刻可看</div>` }
+    </div>
+    <div class="foot"><button class="btn ghost block serif" id="again">重 新 测 一 次</button>
+      <div class="note">本测试用于自我觉察与娱乐，不具备任何心理学诊断效力。</div>
+    </div>
+  </div>`;
+
+  app.innerHTML = head + (showFull ? full : wall);
+  window.scrollTo(0,0);
+
+  const ag=document.getElementById('again'); if(ag) ag.onclick=()=>{ans=[];idx=0;viewCover()};
+  const sv=document.getElementById('save');  if(sv) sv.onclick=()=>draw(f);
+  const cb=document.getElementById('cb');
+  if(cb){
+    cb.onclick=()=>{
+      const v=document.getElementById('ci').value;
+      if(codeOK(v)){ unlocked=true; localStorage.setItem(LS,'1'); viewResult(); }
+      else document.getElementById('ce').textContent='兑换码不正确，请检查后重新输入';
+    };
+    document.getElementById('ci').addEventListener('keydown',e=>{if(e.key==='Enter')cb.click()});
+  }
+}
+
+/* ---------------- 分享长图（原生 Canvas，无外部依赖） ---------------- */
+function draw(f){
+  const c=document.getElementById('cv'), g=c.getContext('2d');
+  const W=1080;
+  const S='"Songti SC","STSong","SimSun",serif';
+  const N='"PingFang SC","Microsoft YaHei",sans-serif';
+  const cx=W/2;
+
+  // 先排版算出总高，避免人物名或金句变长时底部被裁
+  g.font=`36px ${S}`;
+  const quoteLines = layout(f.one, 860);
+  const totalH = 588 + quoteLines.length*56 + 96 + 4*134 + 260 + 150;
+
+  c.width=W; c.height=Math.round(totalH);      // 设尺寸会清空画布，必须在绘制前
+  g.fillStyle='#f4efe6'; g.fillRect(0,0,W,c.height);
+  const grd=g.createRadialGradient(W/2,-60,40,W/2,-60,900);
+  grd.addColorStop(0,'rgba(201,160,106,.28)'); grd.addColorStop(1,'rgba(201,160,106,0)');
+  g.fillStyle=grd; g.fillRect(0,0,W,620);
+
+  g.textAlign='center';
+
+  // 印
+  g.strokeStyle='#9c3a2e'; g.lineWidth=4;
+  roundRect(g,cx-52,96,104,104,16); g.stroke();
+  g.fillStyle='#9c3a2e'; g.font=`46px ${S}`; g.fillText('照见',cx,164);
+
+  g.fillStyle='#6b5f55'; g.font=`26px ${N}`;
+  g.fillText('你 骨 子 里 是 哪 个 历 史 人 物',cx,266);
+
+  g.fillStyle='#2b2520'; g.font=`156px ${S}`;
+  g.fillText(f.n,cx,440);
+  g.fillStyle='#a8743a'; g.font=`40px ${S}`;
+  g.fillText(f.t.split('').join(' '),cx,510);
+
+  g.strokeStyle='rgba(168,116,58,.5)'; g.lineWidth=2;
+  g.beginPath(); g.moveTo(cx-60,536); g.lineTo(cx+60,536); g.stroke();
+
+  // 金句
+  g.fillStyle='#443b33'; g.font=`36px ${S}`;
+  quoteLines.forEach((ln,i)=>g.fillText(ln,cx,588+i*56));
+
+  // 四维
+  let y=588+quoteLines.length*56+96;
+  const dimStart=y;
+  g.textAlign='left';
+  DIMS.forEach((d,i)=>{
+    const k=result.raw[i], aOn=k>=3, pct=Math.max(Math.round(k/5*100),100-Math.round(k/5*100));
+    g.font=`28px ${N}`;
+    g.fillStyle=aOn?'#2b2520':'#9b9089'; g.fillText(d.an,120,y);
+    g.textAlign='right';
+    g.fillStyle=aOn?'#9b9089':'#2b2520'; g.fillText(d.bn,960,y);
+    g.textAlign='left';
+    g.fillStyle='rgba(43,37,32,.08)'; roundRect(g,120,y+18,840,16,8); g.fill();
+    const w=840*Math.abs(k/5-0.5);
+    const lg=g.createLinearGradient(120,0,960,0);
+    lg.addColorStop(0,'#c9a06a'); lg.addColorStop(1,'#a8743a');
+    g.fillStyle=lg;
+    roundRect(g, aOn ? 540-w : 540, y+18, w, 16, 8); g.fill();
+    g.fillStyle='rgba(43,37,32,.22)'; g.fillRect(539,y+14,2,24);
+    g.fillStyle='#a8743a'; g.font=`22px ${N}`;
+    g.fillText(`${aOn?d.an:d.bn} ${pct}%`,120,y+70);
+    y+=134;
+  });
+
+  // 罕见度
+  y = dimStart + 4*134 + 90;
+  g.fillStyle='#2b2520'; roundRect(g,80,y,920,196,28); g.fill();
+  g.textAlign='center';
+  g.fillStyle='rgba(244,239,230,.6)'; g.font=`24px ${N}`;
+  g.fillText('这 套 答 案 的 出 现 概 率',cx,y+68);
+  g.fillStyle='#c9a06a'; g.font=`86px ${S}`;
+  g.fillText(pctText(result.p),cx,y+156);
+
+  // 底部：编码 + 店铺
+  y += 196;
+  g.fillStyle='#6b5f55'; g.font=`24px ${N}`;
+  g.fillText(`${result.code} · ${DIMS.map((d,i)=>result.raw[i]>=3?d.an:d.bn).join(' · ')}`,cx,y+56);
+  g.fillStyle='#a8743a'; g.font=`24px ${N}`;
+  g.fillText(CONFIG.SHOP,cx,y+108);
+
+  document.getElementById('shot').src=c.toDataURL('image/png');
+  document.getElementById('mask').classList.add('on');
+}
+/* 按宽度折行，返回每行文字 */
+function layout(text,max){
+  const c=document.getElementById('cv'), g=c.getContext('2d');
+  const lines=[]; let line='';
+  for(const ch of text){
+    if(g.measureText(line+ch).width>max){ lines.push(line); line=ch }
+    else line+=ch;
+  }
+  if(line) lines.push(line);
+  return lines;
+}
+function roundRect(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+
+/* ---------------- 启动 ---------------- */
+if(localStorage.getItem(LS)==='1') unlocked=true;
+const urlCode=new URLSearchParams(location.search).get('code');
+if(urlCode && codeOK(urlCode)){ unlocked=true; localStorage.setItem(LS,'1'); }
+viewCover();
+</script>
+</body>
+</html>

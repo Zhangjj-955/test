@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>你适合做什么样的工作</title>
+<script>
+/* ============================================================================
+   ★★★ 发货前只改这里，改完保存就能用。整个文件其它地方都不用动。 ★★★
+   ============================================================================
+   SHOP : 结果长图最底下那行字。买家每次把长图发到小红书，都会带着它，
+          这是你唯一的免费曝光位 —— 换成你的店铺名或引流话术。
+   MODE : 'free' 全部解锁。把这个 HTML 文件本身当商品、网盘发货用这个（默认）
+          'code' 要输兑换码才能看完整报告。H5 挂服务器、买家付款拿码用这个
+          'demo' 只给简版结果 + 付费引导。发在笔记里当免费试玩版用这个
+   SALT : 兑换码盐值。只有 MODE 填 'code' 时才用得到，
+          必须和 tools/gen-codes.html 里的 SALT 改成同一个字符串，否则码验不过
+============================================================================ */
+const SETUP = {
+  SHOP: '照见小馆 · 小红书搜「职业适配测试」',
+  MODE: 'free',
+  SALT: 'shigu-2026'
+};
+</script>
+</head>
+<body>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body,button{overflow-wrap:break-word;word-break:break-word}
+.qbody,.qtext,.opts,.opt,.quote,.para,.li,.wall,.rare,.cp,.cover,.res,.sec,.dims,.dim-row{min-width:0}
+:root{
+  --ink:#2b2520; --ink-2:#6b5f55; --paper:#f4efe6; --paper-2:#fbf8f2;
+  --gold:#a8743a; --gold-l:#c9a06a; --red:#9c3a2e; --line:rgba(43,37,32,.12);
+}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.serif{font-family:"Songti SC","STSong","SimSun","Noto Serif SC",serif}
+#app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;
+  background:radial-gradient(900px 420px at 50% -8%,rgba(201,160,106,.20),transparent 62%),var(--paper)}
+
+/* ---------- 封面 ---------- */
+.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 30px}
+.seal{width:62px;height:62px;border:2px solid var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:var(--red);font-size:26px;letter-spacing:.5em;margin-bottom:30px;opacity:.9;text-indent:.5em}
+.cover h1{font-size:clamp(32px,9.5vw,40px);line-height:1.32;letter-spacing:3px;font-weight:600;margin-left:3px}
+.cover h1 em{font-style:normal;color:var(--red)}
+.cover .sub{margin-top:18px;color:var(--ink-2);font-size:14px;line-height:2;letter-spacing:1px;margin-left:1px}
+.rule{width:40px;height:1px;background:var(--gold);margin:28px auto;opacity:.55}
+.meta{display:flex;gap:26px;color:var(--ink-2);font-size:12px;letter-spacing:1px;margin-bottom:46px;margin-left:1px}
+.meta b{display:block;font-size:19px;color:var(--ink);font-weight:600;margin-bottom:4px;letter-spacing:0}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--ink);color:var(--paper-2);border:none;border-radius:999px;
+  padding:16px 52px;font-size:16px;letter-spacing:4px;cursor:pointer;
+  font-family:inherit;transition:transform .12s ease}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);letter-spacing:2px}
+.btn.gold{background:linear-gradient(135deg,#b4813f,#8e5f2c);color:#fff8ec;box-shadow:0 8px 22px -10px rgba(140,92,40,.8)}
+.btn.block{display:flex;width:100%;padding:17px 0}
+.tip{font-size:11px;color:var(--ink-2);margin-top:18px;opacity:.75;line-height:1.8}
+
+/* ---------- 答题 ---------- */
+.quiz{min-height:100vh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+.bar{position:sticky;top:0;z-index:5;background:rgba(244,239,230,.94);backdrop-filter:blur(10px);padding:18px 26px 14px}
+.bar-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--ink-2);letter-spacing:1px;margin-bottom:10px}
+.bar-top b{font-size:17px;color:var(--ink)}
+.track{height:3px;background:rgba(43,37,32,.09);border-radius:2px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--gold-l),var(--gold));border-radius:2px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+.qbody{flex:1;display:flex;flex-direction:column;justify-content:center;padding:34px 26px 40px}
+.qnum{font-size:46px;color:var(--gold);opacity:.26;line-height:1;margin-bottom:12px}
+.qtext{font-size:22px;line-height:1.75;letter-spacing:.5px;margin-bottom:34px;font-weight:500}
+.opts{display:flex;flex-direction:column;gap:13px}
+.opt{background:var(--paper-2);border:1px solid var(--line);border-radius:16px;
+  padding:18px 21px;font-size:16px;line-height:1.65;text-align:left;cursor:pointer;
+  font-family:inherit;color:var(--ink);transition:all .16s ease;position:relative}
+.opt:active{transform:scale(.985)}
+.opt.sel{border-color:var(--gold);background:#fff;box-shadow:0 6px 18px -12px rgba(168,116,58,.9)}
+.opt .mk{color:var(--gold);font-size:13px;margin-right:10px;letter-spacing:1px}
+.back{position:absolute;left:22px;bottom:30px;font-size:13px;color:var(--ink-2);background:none;border:none;cursor:pointer;font-family:inherit;padding:8px}
+.back[hidden]{display:none}
+
+/* 双人答题 */
+.pass-tag{display:inline-block;padding:5px 14px;border:1px solid var(--gold);color:var(--gold);
+  border-radius:999px;font-size:11px;letter-spacing:2px;margin-bottom:22px}
+.pass-tag.b{border-color:var(--ink-2);color:var(--ink-2)}
+
+/* ---------- 结果 ---------- */
+.res{padding:46px 0 70px;animation:up .5s ease both}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.res-kicker{text-align:center;font-size:12px;color:var(--ink-2);letter-spacing:5px;margin-bottom:16px}
+.res-name{text-align:center;font-size:clamp(40px,12vw,58px);letter-spacing:6px;line-height:1.2;font-weight:600;text-indent:6px}
+.res-title{text-align:center;margin-top:14px;font-size:17px;color:var(--gold);letter-spacing:7px;text-indent:7px}
+.res-code{text-align:center;margin-top:16px;font-size:11px;color:var(--ink-2);letter-spacing:3px;opacity:.8}
+.quote{margin:32px 26px 0;padding:22px 24px;background:var(--paper-2);border-left:2px solid var(--gold);
+  border-radius:4px 14px 14px 4px;font-size:17px;line-height:1.9;letter-spacing:.5px}
+
+.sec{margin-top:38px}
+.sec-h{display:flex;align-items:center;gap:12px;margin:0 26px 16px}
+.sec-h span{font-size:13px;letter-spacing:4px;color:var(--ink-2)}
+.sec-h i{flex:1;height:1px;background:var(--line)}
+.para{margin:0 26px;font-size:15.5px;line-height:2.05;color:#443b33;letter-spacing:.3px}
+
+.dims{margin:0 26px;display:flex;flex-direction:column;gap:20px}
+.dim-lab{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-2);margin-bottom:8px;letter-spacing:1px}
+.dim-lab .on{color:var(--ink);font-weight:600}
+.dim-track{height:8px;background:rgba(43,37,32,.07);border-radius:5px;position:relative;overflow:hidden}
+.dim-mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(43,37,32,.14)}
+.dim-fill{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,var(--gold-l),var(--gold));border-radius:5px;transition:all .7s cubic-bezier(.4,0,.2,1)}
+.dim-pct{font-size:11px;color:var(--gold);margin-top:6px;letter-spacing:1px}
+
+.list{margin:0 26px;display:flex;flex-direction:column;gap:13px}
+.li{display:flex;gap:12px;font-size:15px;line-height:1.8;color:#443b33}
+.li .d{color:var(--gold);flex-shrink:0}
+.li.dark .d{color:var(--ink-2)}
+
+.cps{margin:0 26px;display:flex;gap:12px}
+.cp{flex:1;min-width:0;background:var(--paper-2);border:1px solid var(--line);border-radius:16px;padding:18px 10px;text-align:center}
+.cp .t{font-size:11px;letter-spacing:2px;color:var(--ink-2);margin-bottom:10px}
+.cp .n{font-size:20px;letter-spacing:1px;margin-bottom:6px;line-height:1.35}
+.cp .s{font-size:11px;color:var(--gold);letter-spacing:0;line-height:1.6}
+.cp.bad .s{color:var(--ink-2)}
+
+.rare{margin:0 26px;background:linear-gradient(135deg,#2b2520,#413731);color:var(--paper);border-radius:20px;padding:26px 24px;text-align:center}
+.rare .big{font-size:48px;color:var(--gold-l);letter-spacing:1px;line-height:1.1}
+.rare .t{font-size:12px;letter-spacing:3px;opacity:.65;margin-bottom:12px}
+.rare .d{font-size:12.5px;opacity:.68;line-height:1.9;margin-top:12px}
+.rare.gold{background:linear-gradient(135deg,#8e5f2c,#b4813f)}
+
+/* 匹配度：大数字 */
+.score-wrap{margin:0 26px;text-align:center;padding:8px 0 4px}
+.score-big{font-size:88px;color:var(--gold);line-height:1;letter-spacing:2px}
+.score-big small{font-size:30px;margin-left:4px}
+.score-lab{font-size:12px;letter-spacing:4px;color:var(--ink-2);margin-top:12px}
+.score-bar{height:8px;background:rgba(43,37,32,.08);border-radius:5px;margin:22px 26px 0;overflow:hidden}
+.score-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-l),var(--gold));border-radius:5px;transition:width .9s cubic-bezier(.4,0,.2,1)}
+
+/* 职业适配：排行 */
+.ranks{margin:0 26px;display:flex;flex-direction:column;gap:16px}
+.rk{background:var(--paper-2);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.rk.top{border-color:var(--gold);background:#fff}
+.rk-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.rk-h .nm{font-size:20px;letter-spacing:2px}
+.rk-h .pc{font-size:15px;color:var(--gold);letter-spacing:1px}
+.rk-bar{height:6px;background:rgba(43,37,32,.07);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.rk-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-l),var(--gold));border-radius:4px}
+.rk-d{font-size:12.5px;color:var(--ink-2);line-height:1.85}
+
+/* 付费墙 */
+.wall{margin:38px 26px 0;background:var(--paper-2);border:1px solid var(--line);border-radius:22px;padding:30px 24px;text-align:center;position:relative;overflow:hidden}
+.wall h3{font-size:21px;letter-spacing:2px;margin-bottom:8px}
+.wall p{font-size:13px;color:var(--ink-2);line-height:2;margin-bottom:20px}
+.locked{margin:0 26px;position:relative}
+.locked .blur{filter:blur(7px);opacity:.42;pointer-events:none;user-select:none}
+.codebox{display:flex;gap:10px;margin-top:16px}
+.codebox input{flex:1;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:16px;
+  letter-spacing:2px;font-family:inherit;color:var(--ink);text-align:center;text-transform:uppercase}
+.codebox input:focus{outline:none;border-color:var(--gold)}
+.err{color:var(--red);font-size:12.5px;margin-top:10px;min-height:18px;letter-spacing:.5px}
+
+.foot{margin:48px 26px 0;text-align:center}
+.foot .note{font-size:11px;color:var(--ink-2);line-height:2;opacity:.7;margin-top:22px}
+
+canvas{display:none}
+.mask{position:fixed;inset:0;background:rgba(20,16,12,.88);z-index:50;display:none;align-items:center;justify-content:center;flex-direction:column;padding:24px}
+.mask.on{display:flex}
+.mask img{max-width:100%;max-height:76vh;border-radius:12px;box-shadow:0 20px 50px -20px #000}
+.mask p{color:#e8ddcd;font-size:13px;margin-top:18px;letter-spacing:1px;text-align:center;line-height:1.9}
+.mask .x{position:absolute;top:calc(18px + env(safe-area-inset-top));right:22px;color:#e8ddcd;font-size:30px;background:none;border:none;cursor:pointer}
+
+</style>
+<div id="app"></div>
+<canvas id="cv" width="1080" height="1560"></canvas>
+<div class="mask" id="mask">
+  <button class="x" onclick="document.getElementById('mask').classList.remove('on')">×</button>
+  <img id="shot" alt="结果长图">
+  <p>长按图片保存到相册 · 可直接发小红书</p>
+</div>
+<script>
+const QUIZ = {
+  id: 'career',
+  mode: 'career',
+  seal: '方向',
+  title: '你适合<br>做<em>什么样的</em><br>工作',
+  sub: '不是问你想做什么<br>是看你熬得住什么',
+  meta: { a:['20','道题'], b:['6','个方向'], c:['1','份排行'] },
+  note: '按「你真实会怎么选」来，不要按「听起来比较有前途」来',
+
+  clusters: [
+    { n:'分析型', t:'和数据、逻辑打交道',
+      d:'信息、推理、找规律、把复杂的事理清楚',
+      one:'你想踏实，是因为事情本身有答案。',
+      bio:'你在需要动脑、需要找出规律的事情上最舒服。比起跟人周旋，你更愿意面对一个清楚的问题。你能长时间沉浸在细节里而不烦躁，也能在别人觉得枯燥的地方发现乐趣。你不一定喜欢表达，但你的判断往往是对的。',
+      up:['逻辑清晰，能在混乱的信息里抓出关键','耐得住深挖，愿意把一个点钻到底','判断依据扎实，不容易被情绪和场面话带偏'],
+      dn:['容易陷进细节，整体的节奏会慢下来','对「说不清道理」的事缺乏耐心','表达不够，你的好想法常常没被听见'],
+      jobs:['数据分析 / 商业分析','研发、算法、测试','财务、审计、风控','研究类岗位','法律、合规'] },
+    { n:'创造型', t:'和想法、表达打交道',
+      d:'内容、审美、从零做出一个原本不存在的东西',
+      one:'让你照章办事，比让你加班更难受。',
+      bio:'你需要有发挥空间，否则会很快枯竭。你在从零到一的阶段最有能量，在按部就班的阶段最容易走神。你的想法多、反应快，对美感和表达有自己的判断。你不是不能执行，你只是需要知道这件事值得你投入。',
+      up:['创意密度高，常常能给出别人想不到的角度','审美和表达力好，做出来的东西有质感','自驱力强，只要真的感兴趣'],
+      dn:['对重复性工作耐受度低，容易半途失去兴趣','不接受约束，和流程型团队容易冲突','想法多于落地，收尾常常是短板'],
+      jobs:['内容创作 / 编辑 / 编剧','设计、品牌、视觉','产品经理（偏创新型）','策划、文案','短视频 / 新媒体'] },
+    { n:'影响型', t:'和人、说服、推动打交道',
+      d:'沟通、谈判、带动别人、把事推成',
+      one:'事情卡住的时候，你会想去找那个人聊聊。',
+      bio:'你对人的反应很敏感，知道谁在想什么、哪句话能推动谁。你不怕开口，也不怕被拒绝。你在需要推动、协调、谈判的场景里最有效率。比起把事情做完美，你更擅长让事情动起来。',
+      up:['沟通能力强，跨部门协调是你的主场','抗压性好，被拒绝也不容易崩','能快速判断一个人的真实诉求'],
+      dn:['对细节和收尾不够耐心','容易把精力铺得太散','有时推进得太猛，会让协作方有压力'],
+      jobs:['销售 / 商务 / BD','市场、运营','项目管理','公关、媒介','招聘 / HRBP'] },
+    { n:'秩序型', t:'和流程、规则、规范打交道',
+      d:'把事做标准、做扎实、不出错',
+      one:'你受不了明明可以做得更规整的事被做得很乱。',
+      bio:'你在有明确标准、有章可循的环境里状态最好。你能长期保持稳定输出，而且几乎不会在关键环节出错。你不追求惊喜，你追求的是可靠。你的价值往往要等系统跑起来、或者出了事之后才被认出来。',
+      up:['极度可靠，长期保持高质量输出','风险意识强，能提前发现漏洞','稳定，不会因为情绪波动影响交付'],
+      dn:['对变化适应慢，转型期会比较吃力','太讲标准，在需要变通时容易卡住','容易被当成「只会按流程办事」'],
+      jobs:['行政 / 人事 / 后勤','质量管理、流程管理','财务、出纳、结算','法务助理、合规','供应链 / 仓储 / 物流'] },
+    { n:'助人型', t:'和人、照顾、成长打交道',
+      d:'帮别人变好、被需要、成为支持者',
+      one:'你最有成就感的时刻，是别人因为你好了一点。',
+      bio:'你从「帮到别人」这件事里获得能量。你对人的情绪很敏感，能察觉别人没说出口的部分。你有耐心，也愿意花时间去理解一个人。这份工作对你来说不只是谋生，它需要意义感，否则很难持续。',
+      up:['共情力强，别人愿意对你讲真话','有耐心，能长期陪伴一件事慢慢变好','成就感来源稳定，不容易被短期波动影响'],
+      dn:['容易过度投入，边界感模糊','很难对「帮不上」的处境释怀','长期情绪劳动，容易耗竭'],
+      jobs:['教育、培训、教研','医护、康复、护理','心理咨询（需资质）','社工、公益','客户成功 / 用户服务'] },
+    { n:'动手型', t:'和技术、器具、实操打交道',
+      d:'上手做、看得见结果、解决具体问题',
+      one:'你想不明白的事，上手做一遍就明白了。',
+      bio:'你不喜欢空谈，你更相信「做出来看看」。你在需要动手、需要解决具体问题的场景里最有信心。你的成就感来自看得见的成果：修好了、跑通了、装上了。你不追求表达，你追求有效。',
+      up:['实操能力强，理论说不过你的时候你已经做完了','解决具体问题的能力突出','靠谱，交付的东西经得起实际检验'],
+      dn:['对抽象和规划类的任务耐心不足','不太主动表达，功劳容易被别人拿走','技能更新需要自己持续投入'],
+      jobs:['工程技术、机械、电子','运维、网络、硬件','手工艺、烹饪、维修','驾驶、操作类','实验、检测'] }
+  ],
+
+  questions: [
+    { t:'一整天的工作，你更愿意是哪一种？',
+      a:'把一堆乱数据整理出结论', wa:1,
+      b:'和不同的人聊，把事推动起来', wb:4 },
+    { t:'你更受不了哪种工作状态？',
+      a:'每天做一模一样的事，看不到变化', wa:1,
+      b:'规则天天变，今天这样做明天那样做', wb:3 },
+    { t:'拿到一个全新的任务，你会先——',
+      a:'自己琢磨清楚逻辑和数据', wa:1,
+      b:'先找做过的人聊聊', wb:2 },
+    { t:'你最有成就感的时刻是——',
+      a:'把一个复杂问题彻底解决了', wa:1,
+      b:'有人因为你好了一点', wb:4 },
+    { t:'你更愿意待在哪种环境？',
+      a:'安静，能长时间专注', wa:0,
+      b:'热闹，随时有人在交流', wb:1 },
+    { t:'让你做一份报告，你更享受哪部分？',
+      a:'把数据理清楚，得出结论', wa:0,
+      b:'把呈现做得好看、说得动人', wb:1 },
+    { t:'团队里你更常扮演——',
+      a:'把事情做到位的那个人', wa:5,
+      b:'把大家串起来的那个人', wb:2 },
+    { t:'你更相信哪种说法？',
+      a:'先想清楚再做，省得返工', wa:0,
+      b:'先做起来，边做边调整', wb:1 },
+    { t:'哪种工作你会做得更久？',
+      a:'标准清楚、照着做就行', wa:3,
+      b:'有空间自己发挥', wb:1 },
+    { t:'你更愿意面对——',
+      a:'一个很难但有答案的问题', wa:0,
+      b:'一个没有标准答案但很具体的事', wb:5 },
+    { t:'被安排去做一件完全没兴趣的事，你会——',
+      a:'硬着头皮做完，不想拖累别人', wa:3,
+      b:'很难投入，会一直想办法脱身', wb:1 },
+    { t:'你更擅长——',
+      a:'说服别人接受你的想法', wa:2,
+      b:'把别人的想法做得更好', wb:5 },
+    { t:'工作中你更在意——',
+      a:'这件事有没有意义', wa:4,
+      b:'这件事有没有结果', wb:2 },
+    { t:'你更愿意——',
+      a:'一个人负责一整块', wa:0,
+      b:'和一群人一起推进', wb:2 },
+    { t:'哪种反馈你最受用？',
+      a:'「你做得真快，什么都会」', wa:5,
+      b:'「你说的话帮到我了」', wb:4 },
+    { t:'遇到一个没见过的设备/工具，你会——',
+      a:'先上手试试，摸索着来', wa:5,
+      b:'先看说明书，搞清原理', wb:0 },
+    { t:'你更容易被什么打动的？',
+      a:'一件东西被做得极其精致', wa:1,
+      b:'一件事被安排得极其妥帖', wb:3 },
+    { t:'你更愿意做哪种角色？',
+      a:'那个决定方向的人', wa:2,
+      b:'那个把方向落地的人', wb:3 },
+    { t:'你希望十年后的自己——',
+      a:'在某个领域里非常专业', wa:0,
+      b:'能带一群人做成大事', wb:2 },
+    { t:'如果不用考虑收入，你最想做什么？',
+      a:'做点自己觉得好看/有意思的东西', wa:1,
+      b:'帮一些真正需要帮助的人', wb:4 }
+  ],
+
+  disclaimer: '本测试为兴趣倾向参考，不构成职业规划建议。真实选择还需要结合你的经验、资源和现实条件。',
+
+  shareFoot: '职业适配测试 · 六个方向',
+  shareTitle: '你 适 合 做 什 么 样 的 工 作'
+};
+
+</script>
+<script>
+/* ============================================================================
+   通用测试引擎
+   支持 5 种计分模型：
+     axes4   : 4 个二元维度 × 每维 5 题 → 16 种结果（人格类）
+     grid9   : 2 个 0-10 维度 × 各 10 题 → 3×3 九宫格（占有欲、控制欲）
+     attach4 : 2 个 0-8 维度 × 各 8 题 → 4 种依恋类型
+     career  : 6 个能力簇加权 → 排序取前 N（职业适配）
+     match   : 双人心答 20 题 → 匹配度百分比（情侣、朋友）
+   每个测试只需提供 QUIZ 数据对象，不必改本文件。
+============================================================================ */
+/* 下面三行不用改，它们读的是文件顶部那个 SETUP 块 */
+const _S = (typeof SETUP !== 'undefined' && SETUP) ? SETUP : {};
+const CONFIG = {
+  MODE: _S.MODE || 'free',
+  SALT: _S.SALT || 'shigu-2026',
+  BRAND: '照见小馆'
+};
+
+const LS_PREFIX = 'shigu_';
+let ans = [], idx = 0, result = null, unlocked = false, pass = 0;   // pass: 0=自己 1=猜对方
+
+const app = document.getElementById('app');
+const AB = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function fhash(s){let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}return h>>>0}
+function csum(body){const h=fhash(body+CONFIG.SALT);return AB[h&31]+AB[(h>>>5)&31]}
+function codeOK(raw){
+  const c=(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(c.length!==10||c.slice(0,2)!=='PX')return false;
+  return c.slice(8)===csum(c.slice(0,8));
+}
+
+/* ---------------- 计分：按模式分派 ---------------- */
+const BINOM = {
+  5:[1,5,10,10,5,1],
+  10:[1,10,45,120,210,252,210,120,45,10,1],
+  8:[1,8,28,56,70,56,28,8,1]
+};
+
+function score(){
+  const q = QUIZ, m = q.mode;
+
+  if (m === 'axes4' || m === 'attach4'){
+    const per = q.questions.length / q.dims.length;      // 5 或 8
+    const raw = q.dims.map(()=>0);
+    ans.forEach((v,i)=>{ if(v==='a') raw[q.questions[i].d]++ });
+    const C = BINOM[per];
+    const total = Math.pow(2, per);
+    const half = Math.ceil(per/2);
+
+    if (m === 'axes4'){
+      const code = q.dims.map((d,i)=> raw[i]>=half ? d.a : d.b).join('');
+      let p = 1; raw.forEach(k => p *= C[k]/total);
+      return {code, raw, p, mode:m};
+    } else {
+      // attach4：高低二值，只看是否过半
+      const code = q.dims.map((d,i)=> raw[i]>=half ? d.a : d.b).join('');
+      let p = 1;
+      raw.forEach(k => {
+        let s = 0;
+        for (let j = half; j <= per; j++) s += C[j];
+        p *= (k >= half ? s : (total - s)) / total;
+      });
+      return {code, raw, p, mode:m};
+    }
+  }
+
+  if (m === 'grid9'){
+    const per = q.questions.length / q.dims.length;      // 10
+    const raw = q.dims.map(()=>0);
+    ans.forEach((v,i)=>{ if(v==='a') raw[q.questions[i].d]++ });
+    const band = k => k <= 3 ? 0 : (k <= 6 ? 1 : 2);
+    const code = raw.map(band).join('');
+    // 三档概率：0-3 / 4-6 / 7-10 各有 176 / 672 / 176 种组合
+    const P = [176/1024, 672/1024, 176/1024];
+    const p = raw.reduce((acc,k)=>acc*P[band(k)], 1);
+    return {code, raw, bands:raw.map(band), p, mode:m};
+  }
+
+  if (m === 'career'){
+    const n = q.clusters.length;
+    const pts = new Array(n).fill(0);
+    ans.forEach((v,i)=>{
+      const qq = q.questions[i];
+      const w = v === 'a' ? qq.wa : qq.wb;      // 直接给权重下标
+      if (typeof w === 'number') pts[w] += 1;
+    });
+    const tot = pts.reduce((a,b)=>a+b,0) || 1;
+    const ranked = pts.map((v,i)=>({i, pct: v/tot*100}))
+                       .sort((a,b)=>b.pct-a.pct);
+    return {code:'CAREER', raw:pts, ranked, p:null, mode:m};
+  }
+
+  if (m === 'match'){
+    const halfN = q.questions.length;
+    const mine = ans.slice(0, halfN);
+    const guess = ans.slice(halfN);
+    let same = 0;
+    const diff = [];
+    mine.forEach((v,i)=>{
+      if (v === guess[i]) same++;
+      else diff.push(i);
+    });
+    const pct = Math.round(same / halfN * 100);
+    return {code:'MATCH', raw:[same, halfN-same], pct, diff, mode:m};
+  }
+}
+
+/* ---------------- 共享 UI 片段 ---------------- */
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function sec(title, inner){
+  return `<div class="sec"><div class="sec-h"><span>${title}</span><i></i></div>${inner}</div>`;
+}
+function para(t){ return `<div class="para">${t}</div>`; }
+function list(items, dark){
+  return `<div class="list">${items.map(x=>
+    `<div class="li${dark?' dark':''}"><span class="d">${dark?'◇':'◆'}</span><span>${x}</span></div>`).join('')}</div>`;
+}
+function dimBars(raw){
+  const per = QUIZ.questions.length / QUIZ.dims.length;
+  return `<div class="dims">${QUIZ.dims.map((d,i)=>{
+    const k = raw[i], aOn = k >= Math.ceil(per/2);
+    const pct = Math.max(Math.round(k/per*100), 100-Math.round(k/per*100));
+    const w = Math.abs(k/per*100-50);
+    const style = aOn ? `right:50%;width:${w}%` : `left:50%;width:${w}%`;
+    return `<div class="dim-row">
+      <div class="dim-lab"><span class="${aOn?'on':''}">${d.an}</span><span class="${aOn?'':'on'}">${d.bn}</span></div>
+      <div class="dim-track"><div class="dim-mid"></div><div class="dim-fill" style="${style}"></div></div>
+      <div class="dim-pct">${aOn?d.an:d.bn} ${pct}%</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+/* 概率 -> 显示文本。极小值改用「1/N」写法，避免显示成 0.000% */
+function pctText(p){
+  const v = p*100;
+  if (v>=1)     return v.toFixed(1)+'%';
+  if (v>=0.1)   return v.toFixed(2)+'%';
+  if (v>=0.001) return v.toFixed(3)+'%';
+  return '1/'+Math.round(1/p).toLocaleString();
+}
+function rareBox(p){
+  if (p == null) return '';
+  return sec('罕 见 度', `<div class="rare">
+    <div class="t">这 套 答 案 的 出 现 概 率</div>
+    <div class="big serif">${pctText(p)}</div>
+    <div class="d">理论上每 ${Math.round(1/p).toLocaleString()} 个人里才出现 1 次</div></div>`);
+}
+
+/* ---------------- 封面 ---------------- */
+function viewCover(){
+  const q = QUIZ;
+  app.innerHTML = `
+  <div class="cover">
+    <div class="seal serif">${q.seal || CONFIG.BRAND}</div>
+    <h1 class="serif">${q.title}</h1>
+    <div class="sub">${q.sub}</div>
+    <div class="rule"></div>
+    <div class="meta">
+      <div><b>${q.meta.a[0]}</b>${q.meta.a[1]}</div>
+      <div><b>${q.meta.b[0]}</b>${q.meta.b[1]}</div>
+      <div><b>${q.meta.c[0]}</b>${q.meta.c[1]}</div>
+    </div>
+    <button class="btn serif" id="go">开 始</button>
+    <div class="tip">${q.note}<br>${q.footTip || '约 2 分钟 · 答案不上传，只存在你手机里'}</div>
+  </div>`;
+  document.getElementById('go').onclick = ()=>{ ans=[]; idx=0; pass=0; viewQuiz() };
+}
+
+/* ---------------- 答题 ---------------- */
+function viewQuiz(){
+  const q = QUIZ, isMatch = q.mode === 'match';
+  // 匹配型：questions 本身就是题数，每道题答两遍（自己 + 猜对方）
+  const halfN = q.questions.length;
+  const totalAll = isMatch ? halfN * 2 : halfN;
+  const qLocal = (isMatch && idx >= halfN) ? idx - halfN : idx;
+  const qq = q.questions[qLocal];
+  const n = qLocal + 1;
+  const totalQ = halfN;
+  const pct = totalAll ? idx / totalAll * 100 : 0;
+
+  const tag = isMatch
+    ? (pass===0
+        ? `<span class="pass-tag">第一遍 · 你自己的选择</span>`
+        : `<span class="pass-tag b">第二遍 · 猜 TA 会怎么选</span>`)
+    : '';
+
+  // 右上角提示文字：匹配型显示进度说明，其余显示当前维度
+  let sideHint = '';
+  if (isMatch) sideHint = pass===0 ? '你的答案' : '你猜 TA 的';
+  else if (q.dims && q.dims[qq.d]) sideHint = q.dims[qq.d].desc || '';
+
+  app.innerHTML = `
+  <div class="quiz">
+    <div class="bar">
+      <div class="bar-top"><span><b>${String(n).padStart(2,'0')}</b> / ${totalQ}</span><span>${sideHint}</span></div>
+      <div class="track"><div class="fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="qbody">
+      ${tag}
+      <div class="qnum serif">${String(n).padStart(2,'0')}</div>
+      <div class="qtext">${qq.t}</div>
+      <div class="opts">
+        <button class="opt" data-v="a"><span class="mk serif">A</span>${qq.a}</button>
+        <button class="opt" data-v="b"><span class="mk serif">B</span>${qq.b}</button>
+      </div>
+    </div>
+    <button class="back" id="bk" ${idx===0?'hidden':''}>← 上一题</button>
+  </div>`;
+
+  app.querySelectorAll('.opt').forEach(el=>{
+    el.onclick = ()=>{
+      el.classList.add('sel');
+      ans[idx] = el.dataset.v;
+      setTimeout(()=>{
+        idx++;
+        if (isMatch){
+          // 总题数 = 题数 × 2（自己一遍 + 猜对方一遍）
+          const totalAll = q.questions.length * 2;
+          if (idx === halfN){ pass = 1; viewPassIntro(); }
+          else if (idx >= totalAll){ viewResult(); }
+          else { viewQuiz(); }
+        } else if (idx >= q.questions.length){
+          viewResult();
+        } else {
+          viewQuiz();
+        }
+      }, 170);
+    };
+  });
+  const bk = document.getElementById('bk');
+  if (bk) bk.onclick = ()=>{ idx--; if(isMatch && idx<halfN) pass=0; viewQuiz() };
+}
+
+/* 双人测试：两遍之间的过渡页 */
+function viewPassIntro(){
+  app.innerHTML = `
+  <div class="cover">
+    <div class="seal serif">双</div>
+    <h1 class="serif" style="font-size:32px">第一遍完成</h1>
+    <div class="sub" style="margin-top:24px">接下来，请当自己是 TA<br>用 TA 的方式，再选一遍</div>
+    <div class="rule"></div>
+    <div class="tip" style="max-width:280px;text-align:center;line-height:2.2">
+      不用问 TA 的答案，按你的了解猜<br>猜得越准，匹配度越接近真实
+    </div>
+    <button class="btn serif" id="go2" style="margin-top:36px">继 续</button>
+  </div>`;
+  document.getElementById('go2').onclick = ()=>{ viewQuiz() };
+}
+
+/* ---------------- 结果：按模式分派 ---------------- */
+function viewResult(){
+  result = score();
+  const m = result.mode;
+  if (m === 'career') return renderCareer();
+  if (m === 'match')  return renderMatch();
+  if (m === 'grid9')  return renderGrid9();
+  return renderChars();          // axes4 / attach4
+}
+
+/* --- 人物/类型型（16 或 4 种） --- */
+function renderChars(){
+  const f = QUIZ.outcomes[result.code];
+  if (!f) { app.innerHTML = '<div class="cover"><h1>数据缺失</h1><div class="sub">code: '+result.code+'</div></div>'; return; }
+  const showFull = unlocked || CONFIG.MODE === 'free';
+  const cps = f.pair ? QUIZ.outcomes[f.pair] : null;
+  const bad = f.clash ? QUIZ.outcomes[f.clash] : null;
+
+  const head = `<div class="res">
+    <div class="res-kicker">你 的 结 果</div>
+    <div class="res-name serif">${f.n}</div>
+    <div class="res-title serif">${f.t}</div>
+    <div class="res-code">${QUIZ.codeLabel ? QUIZ.codeLabel(result) : result.code}</div>
+    <div class="quote serif">${f.one}</div>`;
+
+  const fullRows = `
+    ${sec('类 型 说 明', para(f.bio))}
+    ${sec(QUIZ.dimTitle || '四 维 坐 标', dimBars(result.raw))}
+    ${sec(QUIZ.upTitle || '你 的 高 光', list(f.up))}
+    ${sec(QUIZ.dnTitle || '你 的 暗 面', list(f.dn, true))}
+    ${cps ? sec(QUIZ.cpTitle || '关 系 参 照', `<div class="cps">
+      <div class="cp"><div class="t">${cps.t||'相 似'}</div><div class="n serif">${cps.n}</div><div class="s">${f.pairWhy||'和你同频的那一类'}</div></div>
+      <div class="cp bad"><div class="t">${bad?bad.t||'相 反':'相 反'}</div><div class="n serif">${bad?bad.n:'—'}</div><div class="s">${f.clashWhy||'和你最容易磨合的那一类'}</div></div></div>`) : ''}
+    ${rareBox(result.p)}
+    ${f.tail ? sec(QUIZ.tailTitle || '写 在 最 后', `<div class="para serif" style="font-size:17px">${f.tail}</div>`) : ''}
+    <div class="foot">
+      <button class="btn gold block serif" id="save">生成长图 · 保存分享</button>
+      <button class="btn ghost block serif" id="again" style="margin-top:12px">重 新 测 一 次</button>
+      <div class="note">${QUIZ.disclaimer}</div>
+    </div></div>`;
+
+  const wall = `
+    ${sec('类 型 说 明', `<div class="locked"><div class="blur">${para(f.bio)}</div></div>`)}
+    <div class="wall">
+      <h3 class="serif">完整报告还有更多内容</h3>
+      <p>${QUIZ.dimTitle||'四维坐标'} · ${QUIZ.upTitle||'你的高光'} · ${QUIZ.dnTitle||'你的暗面'}<br>关系参照 · 答案罕见度 · 可保存长图</p>
+      ${CONFIG.MODE==='code' ? `
+        <div class="codebox"><input id="ci" placeholder="输入兑换码" maxlength="14" autocomplete="off">
+        <button class="btn gold serif" style="padding:14px 24px;letter-spacing:2px" id="cb">解锁</button></div>
+        <div class="err" id="ce"></div>`
+      : `<div class="tip" style="font-size:13px;line-height:2">在小红书店铺拍下完整版<br>付款后自动发货，立刻可看</div>`}
+    </div>
+    <div class="foot"><button class="btn ghost block serif" id="again">重 新 测 一 次</button>
+      <div class="note">${QUIZ.disclaimer}</div></div></div>`;
+
+  app.innerHTML = head + (showFull ? fullRows : wall);
+  window.scrollTo(0,0);
+  bindFooter(f);
+}
+
+/* --- 九宫格型（占有欲 / 控制欲） --- */
+function renderGrid9(){
+  const o = QUIZ.outcomes[result.code];
+  const showFull = unlocked || CONFIG.MODE === 'free';
+  const [b0, b1] = result.bands;
+  const L = QUIZ.levels;
+
+  const head = `<div class="res">
+    <div class="res-kicker">你 的 结 果</div>
+    <div class="res-name serif">${o.n}</div>
+    <div class="res-title serif">${o.t}</div>
+    <div class="res-code">${QUIZ.dims[0].an} ${result.raw[0]}/10 · ${QUIZ.dims[1].an} ${result.raw[1]}/10</div>
+    <div class="quote serif">${o.one}</div>`;
+
+  const grid = `<div class="dims">${QUIZ.dims.map((d,i)=>{
+    const k = result.raw[i];
+    const band = result.bands[i];
+    const bandName = L[i].names[band];
+    return `<div class="dim-row">
+      <div class="dim-lab"><span class="${band===2?'on':''}">${L[i].hi}</span><span class="${band===0?'on':''}">${L[i].lo}</span></div>
+      <div class="dim-track"><div class="dim-mid"></div>
+        <div class="dim-fill" style="${k>=5?`right:50%;width:${(k-5)*10}%`:`left:50%;width:${(5-k)*10}%`}"></div>
+      </div>
+      <div class="dim-pct">${k}/10 · ${bandName}</div>
+    </div>`;
+  }).join('')}</div>`;
+
+  const fullRows = `
+    ${sec('这 是 什 么 样 的 状 态', para(o.bio))}
+    ${sec(QUIZ.bandTitle || '两 条 轴', grid)}
+    ${sec('关 系 里 的 你', list(o.up))}
+    ${sec('需 要 小 心 的 地 方', list(o.dn, true))}
+    ${o.advice ? sec('如 果 想 调 整', para(o.advice)) : ''}
+    ${rareBox(result.p)}
+    <div class="foot">
+      <button class="btn gold block serif" id="save">生成长图 · 保存分享</button>
+      <button class="btn ghost block serif" id="again" style="margin-top:12px">重 新 测 一 次</button>
+      <div class="note">${QUIZ.disclaimer}</div></div></div>`;
+
+  const wall = `
+    ${sec('这 是 什 么 样 的 状 态', `<div class="locked"><div class="blur">${para(o.bio)}</div></div>`)}
+    <div class="wall"><h3 class="serif">完整报告还有更多内容</h3>
+      <p>两条轴的具体分数 · 关系里的你 · 需要小心的地方<br>调整建议 · 答案罕见度 · 可保存长图</p>
+      ${CONFIG.MODE==='code'?`<div class="codebox"><input id="ci" placeholder="输入兑换码" maxlength="14">
+        <button class="btn gold serif" style="padding:14px 24px" id="cb">解锁</button></div><div class="err" id="ce"></div>`
+        :`<div class="tip" style="font-size:13px;line-height:2">在小红书店铺拍下完整版<br>付款后自动发货，立刻可看</div>`}
+    </div>
+    <div class="foot"><button class="btn ghost block serif" id="again">重 新 测 一 次</button>
+      <div class="note">${QUIZ.disclaimer}</div></div></div>`;
+
+  app.innerHTML = head + (showFull ? fullRows : wall);
+  window.scrollTo(0,0);
+  bindFooter(o);
+}
+
+/* --- 职业适配型 --- */
+function renderCareer(){
+  const showFull = unlocked || CONFIG.MODE === 'free';
+  const top = result.ranked;
+  const best = QUIZ.clusters[top[0].i];
+
+  const head = `<div class="res">
+    <div class="res-kicker">你 的 结 果</div>
+    <div class="res-name serif" style="font-size:clamp(34px,10vw,50px)">${best.n}</div>
+    <div class="res-title serif">${best.t}</div>
+    <div class="quote serif">${best.one}</div>`;
+
+  // 条长按最高分归一，避免低分被视觉放大
+  const maxPct = Math.max(...top.map(r=>r.pct), 1);
+  const ranks = `<div class="ranks">${top.slice(0, showFull?6:1).map((r,i)=>{
+    const c = QUIZ.clusters[r.i];
+    return `<div class="rk${i===0?' top':''}">
+      <div class="rk-h"><span class="nm serif">${i+1}. ${c.n}</span><span class="pc">${r.pct.toFixed(1)}%</span></div>
+      <div class="rk-bar"><i style="width:${Math.max(4, r.pct/maxPct*100)}%"></i></div>
+      <div class="rk-d">${c.d}</div></div>`;
+  }).join('')}</div>`;
+
+  const fullRows = `
+    ${sec('为 什 么 是 它', para(best.bio))}
+    ${sec('六 个 方 向 的 匹 配 度', ranks)}
+    ${sec('你 的 优 势', list(best.up))}
+    ${sec('可 能 的 坑', list(best.dn, true))}
+    ${sec('具 体 可 以 做 什 么', list(best.jobs))}
+    <div class="foot">
+      <button class="btn gold block serif" id="save">生成长图 · 保存分享</button>
+      <button class="btn ghost block serif" id="again" style="margin-top:12px">重 新 测 一 次</button>
+      <div class="note">${QUIZ.disclaimer}</div></div></div>`;
+
+  const wall = `
+    ${sec('第 二 名 开 始', `<div class="locked"><div class="blur">${ranks}</div></div>`)}
+    <div class="wall"><h3 class="serif">完整报告还有更多内容</h3>
+      <p>六个方向的完整匹配度排行<br>你的优势 · 可能的坑 · 具体可以做什么</p>
+      ${CONFIG.MODE==='code'?`<div class="codebox"><input id="ci" placeholder="输入兑换码" maxlength="14">
+        <button class="btn gold serif" style="padding:14px 24px" id="cb">解锁</button></div><div class="err" id="ce"></div>`
+        :`<div class="tip" style="font-size:13px;line-height:2">在小红书店铺拍下完整版<br>付款后自动发货，立刻可看</div>`}
+    </div>
+    <div class="foot"><button class="btn ghost block serif" id="again">重 新 测 一 次</button>
+      <div class="note">${QUIZ.disclaimer}</div></div></div>`;
+
+  app.innerHTML = head + (showFull ? fullRows : wall);
+  window.scrollTo(0,0);
+  bindFooter(best);
+}
+
+/* --- 匹配度型 --- */
+function renderMatch(){
+  const showFull = unlocked || CONFIG.MODE === 'free';
+  const pct = result.pct;
+  const tier = QUIZ.tiers.find(t => pct >= t.min) || QUIZ.tiers[QUIZ.tiers.length-1];
+
+  const head = `<div class="res">
+    <div class="res-kicker">你 们 的 匹 配 度</div>
+    <div class="score-wrap">
+      <div class="score-big serif">${pct}<small>%</small></div>
+      <div class="score-lab">${tier.n}</div>
+    </div>
+    <div class="score-bar"><i style="width:${pct}%"></i></div>
+    <div class="quote serif" style="margin-top:30px">${tier.one}</div>`;
+
+  const diffs = result.diff.slice(0, 6).map(i=>{
+    const q = QUIZ.questions[i];
+    return `<div class="li dark"><span class="d">◇</span><span><b>${q.t}</b><br>${q.note || '这一题你们选得不一样。'}</span></div>`;
+  }).join('');
+
+  const fullRows = `
+    ${sec('你 们 的 相 处 模 式', para(tier.bio))}
+    ${sec('最 合 拍 的 地 方', list(tier.up))}
+    ${sec('最 容 易 卡 住 的 地 方', list(tier.dn, true))}
+    ${result.diff.length
+      ? sec(`分 歧 的 ${result.diff.length} 个 点`, `<div class="list">${diffs}</div>`)
+      : sec('分 歧', para('这 20 道题你们没有一个分歧点。要么是真的默契，要么是有一方在猜的时候太乐观了——后者更常见，哈哈。'))}
+    ${tier.advice ? sec('给 你 的 一 句 话', `<div class="para serif" style="font-size:17px">${tier.advice}</div>`) : ''}
+    <div class="foot">
+      <button class="btn gold block serif" id="save">生成长图 · 保存分享</button>
+      <button class="btn ghost block serif" id="again" style="margin-top:12px">重 新 测 一 次</button>
+      <div class="note">${QUIZ.disclaimer}</div></div></div>`;
+
+  const wall = `
+    ${sec('你 们 的 相 处 模 式', `<div class="locked"><div class="blur">${para(tier.bio)}</div></div>`)}
+    <div class="wall"><h3 class="serif">完整报告还有更多内容</h3>
+      <p>最合拍的地方 · 最容易卡住的地方<br>${result.diff.length} 个分歧点的逐条分析 · 可保存长图</p>
+      ${CONFIG.MODE==='code'?`<div class="codebox"><input id="ci" placeholder="输入兑换码" maxlength="14">
+        <button class="btn gold serif" style="padding:14px 24px" id="cb">解锁</button></div><div class="err" id="ce"></div>`
+        :`<div class="tip" style="font-size:13px;line-height:2">在小红书店铺拍下完整版<br>付款后自动发货，立刻可看</div>`}
+    </div>
+    <div class="foot"><button class="btn ghost block serif" id="again">重 新 测 一 次</button>
+      <div class="note">${QUIZ.disclaimer}</div></div></div>`;
+
+  app.innerHTML = head + (showFull ? fullRows : wall);
+  window.scrollTo(0,0);
+  bindFooter(tier);
+}
+
+function bindFooter(f){
+  const ag = document.getElementById('again');
+  if (ag) ag.onclick = ()=>{ ans=[]; idx=0; pass=0; viewCover() };
+  const sv = document.getElementById('save');
+  if (sv) sv.onclick = ()=>drawShare(f);
+  const cb = document.getElementById('cb');
+  if (cb){
+    cb.onclick = ()=>{
+      const v = document.getElementById('ci').value;
+      if (codeOK(v)){ unlocked = true; localStorage.setItem(LS_PREFIX+QUIZ.id, '1'); viewResult(); }
+      else document.getElementById('ce').textContent = '兑换码不正确，请检查后重新输入';
+    };
+    document.getElementById('ci').addEventListener('keydown', e=>{ if(e.key==='Enter') cb.click() });
+  }
+}
+
+/* ---------------- 分享长图 ---------------- */
+function drawShare(f){
+  const c = document.getElementById('cv'), g = c.getContext('2d');
+  const W = 1080, cx = W/2;
+  const S = '"Songti SC","STSong","SimSun",serif';
+  const N = '"PingFang SC","Microsoft YaHei",sans-serif';
+  const m = QUIZ.mode;
+
+  const titleTxt = m==='match' ? (result.pct + '%') : (f.n || '');
+  const subTxt   = m==='match' ? (QUIZ.tiers.find(t=>result.pct>=t.min)||{n:''}).n
+                               : (f.t || '');
+  const quoteTxt = m==='match' ? (QUIZ.shareQuote ? QUIZ.shareQuote(result) : (f.one||'')) : (f.one || QUIZ.shareQuote && QUIZ.shareQuote(result) || '');
+
+  g.font = `36px ${S}`;
+  const quoteLines = layout(g, quoteTxt, 860);
+
+  // 三个区块高度只在这里算一次，绘制处全部复用，保证画布高度和实际绘制严格一致
+  const Y0 = 588 + quoteLines.length*56 + 96;            // 维度区起始
+  const dimN = (QUIZ.dims||[]).length;
+  const bodyH = m==='career' ? 20
+              : m==='match'  ? 10
+              : (dimN ? (dimN-1)*134 + 130 : 0);          // 末条基线 + 文字高 + 卡间距
+  const cardH = m==='career' ? 300 : (m==='match' ? 150 : 196);
+  const totalH = Y0 + bodyH + cardH + 152;
+  c.width = W; c.height = Math.round(totalH);
+
+  g.fillStyle = '#f4efe6'; g.fillRect(0,0,W,c.height);
+  const grd = g.createRadialGradient(cx,-60,40,cx,-60,900);
+  grd.addColorStop(0,'rgba(201,160,106,.28)'); grd.addColorStop(1,'rgba(201,160,106,0)');
+  g.fillStyle = grd; g.fillRect(0,0,W,620);
+
+  g.textAlign = 'center';
+  g.strokeStyle = '#9c3a2e'; g.lineWidth = 4;
+  roundRect(g, cx-52, 96, 104, 104, 16); g.stroke();
+  g.fillStyle = '#9c3a2e'; g.font = `46px ${S}`;
+  g.fillText(QUIZ.seal || CONFIG.BRAND, cx, 164);
+
+  g.fillStyle = '#6b5f55'; g.font = `26px ${N}`;
+  g.fillText(QUIZ.shareTitle || QUIZ.title.replace(/<[^>]+>/g,''), cx, 266);
+
+  g.fillStyle = '#2b2520'; g.font = `${m==='match'?170:156}px ${S}`;
+  g.fillText(titleTxt, cx, m==='match'?430:440);
+  g.fillStyle = '#a8743a'; g.font = `40px ${S}`;
+  g.fillText(String(subTxt).split('').join(' '), cx, 510);
+
+  g.strokeStyle = 'rgba(168,116,58,.5)'; g.lineWidth = 2;
+  g.beginPath(); g.moveTo(cx-60,536); g.lineTo(cx+60,536); g.stroke();
+
+  g.fillStyle = '#443b33'; g.font = `36px ${S}`;
+  quoteLines.forEach((ln,i)=>g.fillText(ln, cx, 588+i*56));
+
+  let y = Y0;
+
+  // 维度条（人物型 / 九宫格型）
+  if (m==='axes4' || m==='attach4' || m==='grid9'){
+    const per = QUIZ.questions.length / QUIZ.dims.length;
+    g.textAlign = 'left';
+    QUIZ.dims.forEach((d,i)=>{
+      const k = result.raw[i];
+      const aOn = k >= Math.ceil(per/2);
+      const pct = Math.max(Math.round(k/per*100), 100-Math.round(k/per*100));
+      g.font = `28px ${N}`;
+      g.fillStyle = aOn?'#2b2520':'#9b9089'; g.fillText(d.an, 120, y);
+      g.textAlign = 'right';
+      g.fillStyle = aOn?'#9b9089':'#2b2520'; g.fillText(d.bn, 960, y);
+      g.textAlign = 'left';
+      g.fillStyle = 'rgba(43,37,32,.08)'; roundRect(g,120,y+18,840,16,8); g.fill();
+      const w = 840*Math.abs(k/per-0.5);
+      const lg = g.createLinearGradient(120,0,960,0);
+      lg.addColorStop(0,'#c9a06a'); lg.addColorStop(1,'#a8743a');
+      g.fillStyle = lg;
+      roundRect(g, aOn ? 540-w : 540, y+18, w, 16, 8); g.fill();
+      g.fillStyle = 'rgba(43,37,32,.22)'; g.fillRect(539,y+14,2,24);
+      g.fillStyle = '#a8743a'; g.font = `22px ${N}`;
+      g.fillText(`${aOn?d.an:d.bn} ${pct}%`, 120, y+70);
+      y += 134;
+    });
+    y = Y0 + bodyH;                             // 与上方 totalH 的算法严格对齐
+  } else if (m==='career'){
+    y += 20;
+  } else if (m==='match'){
+    y += 10;
+  }
+
+  // 罕见度 or 职业排行 or 匹配条
+  if (m==='career'){
+    g.fillStyle = '#2b2520'; roundRect(g,80,y,920,300,28); g.fill();
+    g.textAlign = 'center';
+    g.fillStyle = 'rgba(244,239,230,.55)'; g.font = `22px ${N}`;
+    g.fillText('六 个 方 向 的 匹 配 度', cx, y+50);
+    result.ranked.slice(0,4).forEach((r,i)=>{
+      const c2 = QUIZ.clusters[r.i];
+      g.textAlign = 'left';  g.fillStyle = 'rgba(244,239,230,.9)'; g.font = `26px ${N}`;
+      g.fillText(c2.n, 130, y+110+i*52);
+      g.fillStyle = 'rgba(244,239,230,.2)';
+      roundRect(g, 330, y+94+i*52, 470, 12, 6); g.fill();
+      g.fillStyle = '#c9a06a';
+      roundRect(g, 330, y+94+i*52, 470*Math.min(1, r.pct/40), 12, 6); g.fill();
+      g.textAlign = 'right'; g.fillStyle = '#c9a06a'; g.font = `24px ${N}`;
+      g.fillText(r.pct.toFixed(0)+'%', 950, y+110+i*52);
+      g.textAlign = 'left';
+    });
+    y += 300;
+  } else if (m==='match'){
+    g.fillStyle = '#2b2520'; roundRect(g,80,y,920,150,28); g.fill();
+    g.textAlign = 'center';
+    g.fillStyle = 'rgba(244,239,230,.55)'; g.font = `22px ${N}`;
+    g.fillText(`${QUIZ.questions.length} 道 题`, cx, y+58);
+    g.fillStyle = '#c9a06a'; g.font = `30px ${S}`;
+    g.fillText(`对 上 了 ${result.raw[0]} 题`, cx, y+106);
+    y += 150;
+  } else {
+    const p = result.p;
+    g.fillStyle = '#2b2520'; roundRect(g,80,y,920,196,28); g.fill();
+    g.textAlign = 'center';
+    g.fillStyle = 'rgba(244,239,230,.6)'; g.font = `24px ${N}`;
+    g.fillText('这 套 答 案 的 出 现 概 率', cx, y+68);
+    g.fillStyle = '#c9a06a'; g.font = `86px ${S}`;
+    g.fillText(pctText(p), cx, y+156);
+    y += 196;
+  }
+
+  y += 4;
+  g.fillStyle = '#6b5f55'; g.font = `24px ${N}`;
+  g.fillText(QUIZ.shareFoot || '', cx, y+56);
+  g.fillStyle = '#a8743a'; g.font = `24px ${N}`;
+  g.fillText(QUIZ.shop || '', cx, y+108);
+
+  document.getElementById('shot').src = c.toDataURL('image/png');
+  document.getElementById('mask').classList.add('on');
+}
+
+function layout(g, text, max){
+  const lines = []; let line = '';
+  for (const ch of text){
+    if (g.measureText(line+ch).width > max){ lines.push(line); line = ch; }
+    else line += ch;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+function roundRect(g,x,y,w,h,r){
+  g.beginPath(); g.moveTo(x+r,y);
+  g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r);
+  g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath();
+}
+
+/* ---------------- 启动 ---------------- */
+if (_S.SHOP) QUIZ.shop = _S.SHOP;          // 顶部 SETUP.SHOP 覆盖长图底部文案
+if (localStorage.getItem(LS_PREFIX+QUIZ.id) === '1') unlocked = true;
+const urlCode = new URLSearchParams(location.search).get('code');
+if (urlCode && codeOK(urlCode)){ unlocked = true; localStorage.setItem(LS_PREFIX+QUIZ.id,'1'); }
+viewCover();
+
+</script>
+</body>
+</html>
